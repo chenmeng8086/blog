@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseURL = './'
+const baseURL = '/api'
 
 const require = axios.create({
     baseURL,

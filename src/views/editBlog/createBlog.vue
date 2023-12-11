@@ -3,16 +3,28 @@
     <span slot="path">
       <BreadcrumbItem>{{ position }}</BreadcrumbItem>
     </span>
-    <div class="title"><span class="info">标题：</span><Input maxlength="30" v-model="blog.title" show-word-limit
-        placeholder="请输入标题..." style="width: 500px" /></div>
-    <div class="title"><span class="info">简述：</span><Input maxlength="50" v-model="blog.description" show-word-limit
-        placeholder="请输入描述..." style="width: 500px" /></div>
-    <div class="title tag-box">
+    <div class="title">
+      <span class="info">标题：</span>
+      <Input maxlength="30" v-model="blog.title" show-word-limit placeholder="请输入标题" />
+    </div>
+    <div class="title">
+      <span class="info">简述：</span>
+      <Input
+        type="textarea"
+        maxlength="50"
+        v-model="blog.description"
+        show-word-limit
+        placeholder="请输入描述"
+      />
+    </div>
+    <div class="title">
       <span class="info">标签：</span>
       <a-select v-model="blog.tags" mode="tags" placeholder="请输入标签">
-        <a-select-option v-for="item in tagList" :value="item.value" :key="item.value">
-          {{ item.label }}
-        </a-select-option>
+        <a-select-option
+          v-for="item in tagList"
+          :value="item.value"
+          :key="item.value"
+        >{{ item.label }}</a-select-option>
       </a-select>
     </div>
     <div id="editor"></div>
@@ -25,85 +37,87 @@
 </template>
 
 <script>
-import E from 'wangeditor' // 使用富文本编辑器
-import contain from '@/common-components/contain'
-import { addBlog, uPimgUrl } from '@/service'
+import E from "wangeditor"; // 使用富文本编辑器
+import contain from "@/common-components/contain";
+import { addBlog, uPimgUrl } from "@/service";
 export default {
   components: { contain },
   data() {
     return {
       position: this.$route.params.position,
       blog: {
-        id: '',
+        id: "",
         classify: (() => {
-          if (this.$route.params.position === 'frontend') {
-            return 'js'
-          } else if (this.$route.params.position === 'backend') {
-            return 'python'
+          if (this.$route.params.position === "frontend") {
+            return "js";
+          } else if (this.$route.params.position === "backend") {
+            return "python";
           } else {
-            return 'other'
+            return "other";
           }
         })(),
-        title: '',
-        description: '',
-        content: '',
+        title: "",
+        description: "",
+        content: "",
         tags: []
       },
       tagList: [
         {
-          value: 'javascript',
-          label: 'javascript'
-        }, {
-          value: 'python',
-          label: 'python'
+          value: "javascript",
+          label: "javascript"
+        },
+        {
+          value: "python",
+          label: "python"
         }
       ],
       selectedTags: []
-    }
+    };
   },
 
   mounted() {
-    const editor = new E('#editor')
+    const editor = new E("#editor");
     editor.config.onchange = () => {
-      this.blog.content = editor.txt.html()
-    }
-    editor.config.uploadImgShowBase64 = false
-    editor.config.uploadImgServer = uPimgUrl
-    editor.config.uploadFileName = 'image'
-    editor.config.height = 500
-    editor.create()
+      this.blog.content = editor.txt.html();
+    };
+    editor.config.uploadImgShowBase64 = false;
+    editor.config.uploadImgServer = uPimgUrl;
+    editor.config.uploadFileName = "image";
+    editor.config.height = 500;
+    editor.create();
   },
 
   methods: {
     addBlog() {
       if (this.blog.title && this.blog.description && this.blog.content) {
-        addBlog(this.blog).then(res => {
-          if (res.status === 200) {
-            this.$Message.success({
-              background: true,
-              content: '创建成功！'
-            })
-            this.$router.go(-1)
-          }
-        }).catch(err => {
-          this.$Message.error({
-            background: true,
-            content: err
+        addBlog(this.blog)
+          .then(res => {
+            if (res.status === 200) {
+              this.$Message.success({
+                background: true,
+                content: "创建成功！"
+              });
+              this.$router.go(-1);
+            }
           })
-        })
+          .catch(err => {
+            this.$Message.error({
+              background: true,
+              content: err
+            });
+          });
       } else {
         this.$Message.warning({
           background: true,
-          content: '博客内容不能为空！'
-        })
+          content: "内容不能为空！"
+        });
       }
     },
     back() {
-      this.$router.go(-1)
+      this.$router.go(-1);
     }
   }
-
-}
+};
 </script>
 
 <style scoped>
@@ -127,12 +141,7 @@ export default {
   width: 20px;
 }
 
-.tag-box {
-  display: flex;
-  align-items: center;
-}
-
-.tag-box .ant-select {
-  width: 500px;
+.ant-select {
+  width: 100%;
 }
 </style>

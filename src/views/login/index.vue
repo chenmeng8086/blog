@@ -4,97 +4,135 @@
     <Form class="inner" ref="formInline" :model="formInline" :rules="ruleInline" :inline="false">
       <FormItem prop="name">
         <Input type="text" v-model="formInline.name" placeholder="用户名">
-        <Icon type="ios-person-outline" slot="prepend" />
+          <Icon type="ios-person-outline" slot="prepend" />
         </Input>
       </FormItem>
       <FormItem prop="chineseName" v-if="formInline.operation === 'register'">
         <Input type="text" v-model="formInline.chineseName" placeholder="中文名">
-        <Icon type="ios-person-outline" slot="prepend" />
+          <Icon type="ios-person-outline" slot="prepend" />
         </Input>
       </FormItem>
       <FormItem prop="password">
         <Input type="password" v-model="formInline.password" placeholder="密码">
-        <Icon type="ios-lock-outline" slot="prepend" />
+          <Icon type="ios-lock-outline" slot="prepend" />
         </Input>
       </FormItem>
       <FormItem>
-        <Button v-if="formInline.operation === 'register'" :inline="false" type="primary"
-          @click="submit('register')">注册</Button>
-        <Button v-if="formInline.operation === 'login'" :inline="false" type="primary"
-          @click="submit('login')">登录</Button>
-        <span class="info" v-if="formInline.operation === 'register'" @click="() => { formInline.operation = 'login' }">
-          去登录></span>
-        <span class="info" v-if="formInline.operation === 'login'" @click="() => {
+        <Button
+          v-if="formInline.operation === 'register'"
+          :inline="false"
+          type="primary"
+          @click="submit('register')"
+        >注册</Button>
+        <Button
+          v-if="formInline.operation === 'login'"
+          :inline="false"
+          type="primary"
+          @click="submit('login')"
+        >登录</Button>&nbsp;
+        <span
+          class="info"
+          v-if="formInline.operation === 'register'"
+          @click="() => { formInline.operation = 'login' }"
+        >去登录></span>
+        <span
+          class="info"
+          v-if="formInline.operation === 'login'"
+          @click="() => {
           formInline.operation = 'register';
           formInline.name = ''; formInline.password = ''
-        }">去注册> </span>
+        }"
+        >去注册></span>
       </FormItem>
     </Form>
   </div>
 </template>
 <script>
-import store from '@/store'
-import { login } from '@/service'
+import store from "@/store";
+import { login } from "@/service";
 export default {
   data() {
     return {
       formInline: {
-        name: '',
-        chineseName: '',
-        password: '',
-        role: 'other',
-        operation: 'login'
+        name: "",
+        chineseName: "",
+        password: "",
+        role: "other",
+        operation: "login"
       },
       ruleInline: {
-        name: [
-          { required: true, message: '请填写用户名', trigger: 'blur' }
-        ],
+        name: [{ required: true, message: "请填写用户名", trigger: "blur" }],
         password: [
-          { required: true, message: '请填写用户密码.', trigger: 'blur' },
-          { type: 'string', min: 6, message: '密码长度不能少于6位', trigger: 'blur' }
+          {
+            required: true,
+            message: "请填写用户密码",
+            trigger: "blur"
+          },
+          {
+            type: "string",
+            min: 6,
+            message: "密码长度不能少于6位",
+            trigger: "blur"
+          }
         ],
         chineseName: [
-          { required: true, message: '请填写中文名', trigger: 'blur' },
+          { required: true, message: "请填写中文名", trigger: "blur" }
         ]
       }
-    }
+    };
   },
   methods: {
-    submit(operation) {
-      if (!this.formInline.name || !this.formInline.password || (!this.formInline.chineseName && this.formInline.operation === 'register')) {
+    async submit(operation) {
+      await new Promise((resolved, rejected) => {
+        this.$refs.formInline.validate(valid => {
+          if (valid) {
+            resolved();
+          } else {
+            rejected();
+          }
+        });
+      });
+      if (
+        !this.formInline.name ||
+        !this.formInline.password ||
+        (!this.formInline.chineseName &&
+          this.formInline.operation === "register")
+      ) {
         this.$Message.warning({
           background: true,
-          content: '信息不完整'
-        })
-        return
+          content: "信息不完整"
+        });
+        return;
       }
-      this.formInline.operation = operation
-      login(this.formInline).then(res => {
-        if (res.status === 200) {
-          store.isLogin = true
-          sessionStorage.setItem('userInfo', JSON.stringify(res.data))
-          if (this.formInline.operation === 'login') {
-            this.$router.push('/other')
+      this.formInline.operation = operation;
+      login(this.formInline)
+        .then(res => {
+          if (res.status === 200) {
+            store.isLogin = true;
+            sessionStorage.setItem("userInfo", JSON.stringify(res.data));
+            if (this.formInline.operation === "login") {
+              this.$router.push("/list");
+            }
+            this.$Message.success({
+              background: true,
+              content: res.msg
+            });
+          } else {
+            this.$Message.warning({
+              background: true,
+              content: res.msg
+            });
           }
-          this.$Message.success({
-            background: true,
-            content: res.msg
-          })
-        } else {
-          this.$Message.warning({
-            background: true,
-            content: res.msg
-          })
-        }
-      }).catch(err => {
-        this.$Message.error({
-          background: true,
-          content: err
         })
-      })
+        .catch(err => {
+          this.$Message.error({
+            background: true,
+            content: err
+          });
+        });
     }
   }
-}
+};
 </script>
 
 <style scoped>

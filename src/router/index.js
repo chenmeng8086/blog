@@ -18,7 +18,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/other'
+      redirect: '/list'
     },
     {
       path: '/login',
@@ -31,7 +31,7 @@ const router = new Router({
       component: home
     },
     {
-      path: '/other',
+      path: '/list',
       name: 'other',
       component: blogList
     },
