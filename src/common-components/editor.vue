@@ -1,0 +1,84 @@
+<template>
+  <div class="container">
+    <div id="toolbar-container" :style="{ display: hideToolbar ? 'none' : 'block' }"></div>
+    <div id="editor-container"></div>
+  </div>
+</template>
+
+<script>
+import { createEditor, createToolbar } from '@wangeditor/editor';
+export default {
+  props: {
+    onCreated: {
+      type: Function,
+      default: new Function()
+    },
+    onContentChange: {
+      type: Function,
+      default: new Function()
+    },
+    initailHtml: {
+      type: String,
+      default: () => ''
+    },
+    readOnly: {
+      type: Boolean,
+      default: () => false
+    },
+    hideToolbar: {
+      type: Boolean,
+      default: () => false
+    }
+  },
+  data() {
+    return {
+      toolbar: null,
+      editor: null
+    };
+  },
+  mounted() {
+    const editorConfig = {
+      placeholder: 'Type here...',
+      readOnly: this.readOnly,
+      onChange: editor => {
+        this.onContentChange(editor.getHtml());
+      }
+    };
+    this.editor = Object.seal(
+      createEditor({
+        selector: '#editor-container',
+        html: this.initailHtml,
+        config: editorConfig,
+        mode: 'default' // or 'simple'
+      })
+    );
+    const toolbarConfig = {};
+
+    this.toolbar = createToolbar({
+      editor: this.editor,
+      selector: '#toolbar-container',
+      config: toolbarConfig,
+      mode: 'default' // or 'simple'
+    });
+    this.onCreated(this.editor, this.toolbar);
+  },
+  beforeDestroy() {
+    this.editor.destroy();
+  }
+};
+</script>
+
+<style src="@wangeditor/editor/dist/css/style.css">
+</style>
+<style scoped>
+.container {
+  z-index: 99;
+}
+#toolbar-container {
+  border: 1px #f0f0f0 solid;
+}
+#editor-container {
+  border: 1px #f0f0f0 solid;
+  min-height: 600px;
+}
+</style>

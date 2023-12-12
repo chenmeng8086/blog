@@ -102,15 +102,15 @@
 </template>
 
 <script>
-import contain from "@/common-components/contain";
-import { mapState } from "vuex";
-import { getBlogList, deleteBlog, changeLikeNum } from "@/service";
+import contain from '@/common-components/contain';
+import { mapState } from 'vuex';
+import { getBlogList, deleteBlog, changeLikeNum } from '@/service';
 export default {
   components: { contain },
   data() {
     return {
       blog_arr: [],
-      position: "",
+      position: '',
       sping: false,
       isHaveData: false,
       likeNum: 0,
@@ -129,14 +129,14 @@ export default {
   },
   methods: {
     getBlogList(searchKey) {
-      this.position = this.$route.path.replace("/", "");
-      let path = "";
-      if (this.position === "backend") {
-        path = "python";
-      } else if (this.position === "frontend") {
-        path = "js";
+      this.position = this.$route.path.replace('/', '');
+      let path = '';
+      if (this.position === 'backend') {
+        path = 'python';
+      } else if (this.position === 'frontend') {
+        path = 'js';
       } else {
-        path = "other";
+        path = 'other';
       }
       this.sping = true;
       const params = {
@@ -145,7 +145,7 @@ export default {
       if (searchKey) {
         params.searchKey = searchKey;
       }
-      if (this.$route.query.searchAll === "true") {
+      if (this.$route.query.searchAll === 'true') {
         params.searchAll = true;
       }
 
@@ -173,15 +173,15 @@ export default {
     },
     confirm(blogId) {
       this.$Modal.confirm({
-        title: "删除博客",
-        content: "确定删除该条博客？",
+        title: '删除博客',
+        content: '确定删除该条博客？',
         onOk: () => {
           this.removeBlog(blogId);
         },
         onCancel: () => {
           this.$Message.info({
             background: true,
-            content: "取消删除"
+            content: '取消删除'
           });
         }
       });
@@ -192,7 +192,7 @@ export default {
           if (res.status === 200) {
             this.$Message.info({
               background: true,
-              content: "删除成功！"
+              content: '删除成功！'
             });
             this.getBlogList();
           }

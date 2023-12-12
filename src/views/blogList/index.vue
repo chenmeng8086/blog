@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import page from "@/common-components/page";
+import page from '@/common-components/page';
 export default {
   components: { page }
 };

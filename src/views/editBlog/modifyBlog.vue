@@ -6,13 +6,13 @@
 </template>
 
 <script>
-import editBlog from "@/common-components/editBLog";
-import { modifyBlog, getSingleBlog } from "@/service";
+import editBlog from '@/common-components/editBLog';
+import { modifyBlog, getSingleBlog } from '@/service';
 export default {
   components: { editBlog },
   data() {
     return {
-      blog: "",
+      blog: '',
       sping: true
     };
   },
@@ -46,7 +46,7 @@ export default {
             if (res.status === 200) {
               this.$Message.success({
                 background: true,
-                content: "修改成功！"
+                content: '修改成功！'
               });
               this.$router.go(-1);
             }
@@ -60,7 +60,7 @@ export default {
       } else {
         this.$Message.warning({
           background: true,
-          content: "内容不能为空！"
+          content: '内容不能为空！'
         });
       }
     },
@@ -73,6 +73,3 @@ export default {
   }
 };
 </script>
-
-<style>
-</style>

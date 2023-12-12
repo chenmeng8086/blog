@@ -48,35 +48,35 @@
   </div>
 </template>
 <script>
-import store from "@/store";
-import { login } from "@/service";
+import store from '@/store';
+import { login } from '@/service';
 export default {
   data() {
     return {
       formInline: {
-        name: "",
-        chineseName: "",
-        password: "",
-        role: "other",
-        operation: "login"
+        name: '',
+        chineseName: '',
+        password: '',
+        role: 'other',
+        operation: 'login'
       },
       ruleInline: {
-        name: [{ required: true, message: "请填写用户名", trigger: "blur" }],
+        name: [{ required: true, message: '请填写用户名', trigger: 'blur' }],
         password: [
           {
             required: true,
-            message: "请填写用户密码",
-            trigger: "blur"
+            message: '请填写用户密码',
+            trigger: 'blur'
           },
           {
-            type: "string",
+            type: 'string',
             min: 6,
-            message: "密码长度不能少于6位",
-            trigger: "blur"
+            message: '密码长度不能少于6位',
+            trigger: 'blur'
           }
         ],
         chineseName: [
-          { required: true, message: "请填写中文名", trigger: "blur" }
+          { required: true, message: '请填写中文名', trigger: 'blur' }
         ]
       }
     };
@@ -96,11 +96,11 @@ export default {
         !this.formInline.name ||
         !this.formInline.password ||
         (!this.formInline.chineseName &&
-          this.formInline.operation === "register")
+          this.formInline.operation === 'register')
       ) {
         this.$Message.warning({
           background: true,
-          content: "信息不完整"
+          content: '信息不完整'
         });
         return;
       }
@@ -109,9 +109,9 @@ export default {
         .then(res => {
           if (res.status === 200) {
             store.isLogin = true;
-            sessionStorage.setItem("userInfo", JSON.stringify(res.data));
-            if (this.formInline.operation === "login") {
-              this.$router.push("/list");
+            sessionStorage.setItem('userInfo', JSON.stringify(res.data));
+            if (this.formInline.operation === 'login') {
+              this.$router.push('/list');
             }
             this.$Message.success({
               background: true,

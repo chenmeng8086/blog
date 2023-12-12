@@ -38,12 +38,12 @@
   </div>
 </template>
 <script>
-import { uPimgUrl } from "@/service";
+import { uPimgUrl } from '@/service';
 export default {
   data() {
     return {
       defaultList: [],
-      imgUrl: "",
+      imgUrl: '',
       visible: false,
       uploadList: [],
       uPimgUrl: uPimgUrl
@@ -61,30 +61,30 @@ export default {
     handleSuccess(res, file) {
       file.url = res.rul;
       file.name = res.rul
-        .split("/")
-        .split("/")
+        .split('/')
+        .split('/')
         .reverse()[0];
     },
     handleFormatError(file) {
       this.$Notice.warning({
-        title: "The file format is incorrect",
+        title: 'The file format is incorrect',
         desc:
-          "File format of " +
+          'File format of ' +
           file.name +
-          " is incorrect, please select jpg or png."
+          ' is incorrect, please select jpg or png.'
       });
     },
     handleMaxSize(file) {
       this.$Notice.warning({
-        title: "Exceeding file size limit",
-        desc: "File  " + file.name + " is too large, no more than 2M."
+        title: 'Exceeding file size limit',
+        desc: 'File  ' + file.name + ' is too large, no more than 2M.'
       });
     },
     handleBeforeUpload() {
       const check = this.uploadList.length < 5;
       if (!check) {
         this.$Notice.warning({
-          title: "Up to five pictures can be uploaded."
+          title: 'Up to five pictures can be uploaded.'
         });
       }
       return check;

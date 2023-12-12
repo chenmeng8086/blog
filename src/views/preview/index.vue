@@ -1,25 +1,8 @@
 <template>
   <contain :sping="sping" class="preview-container">
     <div slot="top-bar" class="top">
-      <span>
-        <span>字体大小：</span>
-        <Select v-model="fontSize" style="width: 66px">
-          <Option v-for="size in fontSizes" :value="size" :key="size">{{ size }}px</Option>
-        </Select>
-        <Divider type="vertical" />
-        <span>字体类型：</span>
-        <Select v-model="fontType" style="width: 74px">
-          <Option
-            v-for="(family, index) in fontTypes"
-            :value="family"
-            :key="family"
-          >类型{{ index + 1 }}</Option>
-        </Select>
-      </span>
-      <div>
-        <Button type="info" @click="modifyBlog" style="margin-right: 12px;">编辑</Button>
-        <Button @click="back">返回</Button>
-      </div>
+      <Button type="info" @click="modifyBlog" style="margin-right: 12px;">编辑</Button>
+      <Button @click="back">返回</Button>
     </div>
     <div class="container-box">
       <div class="title">{{ blog.title }}</div>
@@ -28,33 +11,22 @@
         标签：
         <Tag v-for="(el, index) in blog.tags" :key="index">{{ el }}</Tag>
       </div>
-      <div
-        class="content"
-        :style="{ 'font-size': fontSize + 'px', 'font-family': fontType }"
-        v-html="blog.content"
-      ></div>
+      <editor :onCreated="onCreated" :readOnly="true" :hideToolbar="true" />
     </div>
   </contain>
 </template>
 
 <script>
-import contain from "@/common-components/contain";
-import { getSingleBlog } from "@/service";
+import contain from '@/common-components/contain';
+import editor from '@/common-components/editor';
+import { getSingleBlog } from '@/service';
 export default {
-  components: { contain },
+  components: { contain, editor },
   data() {
     return {
       blog: {},
       sping: true,
-      fontSizes: [12, 14, 16, 18, 20],
-      fontSize: 16,
-      fontTypes: [
-        "cursive",
-        "fantasy",
-        "'Courier New', Courier, monospace",
-        "'Comic Sans MS', cursive"
-      ],
-      fontType: "cursive"
+      editor: null
     };
   },
   created() {
@@ -69,6 +41,7 @@ export default {
           if (res.status === 200) {
             this.sping = false;
             this.blog = res.data;
+            this.editor.setHtml(this.blog.content);
           }
         })
         .catch(err => {
@@ -85,6 +58,9 @@ export default {
     modifyBlog() {
       let { blogId } = this.$route.params;
       this.$router.push(`/modify/${blogId}`);
+    },
+    onCreated(editor) {
+      this.editor = editor;
     }
   }
 };
@@ -92,48 +68,46 @@ export default {
 
 <style scoped>
 .preview-container {
-  background-color: #f4f5f5;
+  background-color: #f5f5f5;
 }
 
 .container-box {
-  background-color: aliceblue;
   padding: 0 10px 10px 10px;
-  max-width: 860px;
+  max-width: 1000px;
   min-height: 100vh;
   margin: 0 auto;
   border-radius: 12px;
+
+  background-color: #fff;
+  padding: 20px 50px 50px 50px;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 12%);
 }
 
 .title {
   margin: 0 -10px 0 -10px;
   text-align: center;
-  font-size: 16px;
+  font-size: 24px;
   font-weight: bold;
-  padding-top: 10px 0;
-  background-color: beige;
-  color: #464c5b;
-  padding: 10px;
+  padding: 20px 12px;
   border-radius: 12px;
+  border-bottom: 1px solid #e8e8e8;
 }
 
 .description {
   font-size: 16px;
   font-weight: bold;
   color: #464c5b;
-  padding: 10px 0;
-}
-
-.content {
-  color: #657180;
   margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid #e8eaec;
+}
+.tag-box {
+  margin: 12px 0;
 }
 
 .top {
-  padding: 10px 24px;
+  padding: 12px 24px;
   margin: 0 -24px;
-  display: flex;
-  justify-content: space-between;
+  text-align: right;
+  border-bottom: #e8e8e8 1px solid;
 }
 </style>

@@ -27,7 +27,10 @@
         >{{ item.label }}</a-select-option>
       </a-select>
     </div>
-    <div id="editor"></div>
+    <div style="margin-bottom: 48px;">
+      <editor :onContentChange="onContentChange" />y
+    </div>
+
     <div class="creat-btn">
       <Button slot="back-btn" @click="back">返回</Button>
       <div class="space"></div>
@@ -37,55 +40,45 @@
 </template>
 
 <script>
-import E from "wangeditor"; // 使用富文本编辑器
-import contain from "@/common-components/contain";
-import { addBlog, uPimgUrl } from "@/service";
+import contain from '@/common-components/contain';
+import editor from '@/common-components/editor';
+import { addBlog, uPimgUrl } from '@/service';
 export default {
-  components: { contain },
+  components: { contain, editor },
   data() {
     return {
       position: this.$route.params.position,
       blog: {
-        id: "",
+        id: '',
         classify: (() => {
-          if (this.$route.params.position === "frontend") {
-            return "js";
-          } else if (this.$route.params.position === "backend") {
-            return "python";
+          if (this.$route.params.position === 'frontend') {
+            return 'js';
+          } else if (this.$route.params.position === 'backend') {
+            return 'python';
           } else {
-            return "other";
+            return 'other';
           }
         })(),
-        title: "",
-        description: "",
-        content: "",
+        title: '',
+        description: '',
+        content: '',
         tags: []
       },
       tagList: [
         {
-          value: "javascript",
-          label: "javascript"
+          value: 'javascript',
+          label: 'javascript'
         },
         {
-          value: "python",
-          label: "python"
+          value: 'python',
+          label: 'python'
         }
       ],
       selectedTags: []
     };
   },
 
-  mounted() {
-    const editor = new E("#editor");
-    editor.config.onchange = () => {
-      this.blog.content = editor.txt.html();
-    };
-    editor.config.uploadImgShowBase64 = false;
-    editor.config.uploadImgServer = uPimgUrl;
-    editor.config.uploadFileName = "image";
-    editor.config.height = 500;
-    editor.create();
-  },
+  mounted() {},
 
   methods: {
     addBlog() {
@@ -95,7 +88,7 @@ export default {
             if (res.status === 200) {
               this.$Message.success({
                 background: true,
-                content: "创建成功！"
+                content: '创建成功！'
               });
               this.$router.go(-1);
             }
@@ -109,9 +102,12 @@ export default {
       } else {
         this.$Message.warning({
           background: true,
-          content: "内容不能为空！"
+          content: '内容不能为空！'
         });
       }
+    },
+    onContentChange(value) {
+      this.blog.content = value;
     },
     back() {
       this.$router.go(-1);
@@ -135,10 +131,20 @@ export default {
   display: flex;
   justify-content: flex-end;
   padding-top: 10px;
+
+  padding: 12px 24px;
+  background-color: #fff;
+  border-top: 1px solid #e8e8e8;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .space {
-  width: 20px;
+  width: 12px;
 }
 
 .ant-select {

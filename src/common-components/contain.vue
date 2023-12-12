@@ -19,7 +19,7 @@
               p-id="24675"
             />
           </svg>
-          <span>个人博客</span>
+          <span>我的笔记</span>
         </span>
         <Input
           class="search-input"
@@ -65,8 +65,8 @@
   </div>
 </template>
 <script>
-import Sping from "@/common-components/sping";
-import { mapState, mapActions } from "vuex";
+import Sping from '@/common-components/sping';
+import { mapState, mapActions } from 'vuex';
 export default {
   components: { Sping },
   props: {
@@ -87,28 +87,28 @@ export default {
   },
 
   methods: {
-    ...mapActions("common", [
-      "changeSearchkey",
-      "changeAcitveName",
-      "changeSearchType"
+    ...mapActions('common', [
+      'changeSearchkey',
+      'changeAcitveName',
+      'changeSearchType'
     ]),
 
     selectItem(e, query) {
       this.changeAcitveName(e);
       e = e.toLocaleLowerCase();
-      if (e === "首页") {
+      if (e === '首页') {
         this.$router.push({
-          path: "/home",
+          path: '/home',
           query: query
         });
-      } else if (e === "other") {
+      } else if (e === 'other') {
         this.$router.push({
-          path: "/list",
+          path: '/list',
           query: query
         });
       }
       const searchKey = this.common.searchKey;
-      if (e !== "首页") this.search(searchKey);
+      if (e !== '首页') this.search(searchKey);
     },
 
     changeSeachKey(e) {
@@ -116,22 +116,22 @@ export default {
     },
 
     searchBlog(e) {
-      let options = ["frontend", "backend", "other"];
+      let options = ['frontend', 'backend', 'other'];
       let flag = options.includes(this.$route.name);
       if (!flag) {
-        this.changeSearchType("all");
+        this.changeSearchType('all');
       }
 
-      if (this.common.searchType === "all") {
-        this.selectItem("other", { searchAll: true });
+      if (this.common.searchType === 'all') {
+        this.selectItem('other', { searchAll: true });
       } else {
         this.selectItem(this.$route.name, {});
       }
     },
     onDropdown(e) {
-      if (e === "quit") {
-        this.$router.push("/login");
-        sessionStorage.removeItem("userInfo");
+      if (e === 'quit') {
+        this.$router.push('/login');
+        sessionStorage.removeItem('userInfo');
       }
     }
   }

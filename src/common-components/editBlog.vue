@@ -27,7 +27,9 @@
         >{{ item.label }}</a-select-option>
       </a-select>
     </div>
-    <div id="editor"></div>
+    <div style="margin-bottom: 48px;">
+      <editor :onContentChange="onContentChange" :onCreated="onCreated" />
+    </div>
     <div class="edit-btn">
       <slot name="back-btn"></slot>
       <div class="space"></div>
@@ -37,24 +39,23 @@
 </template>
 
 <script>
-import E from "wangeditor"; // 使用富文本编辑器
-import contain from "@/common-components/contain";
-import { uPimgUrl } from "@/service";
+import contain from '@/common-components/contain';
+import editor from '@/common-components/editor';
 export default {
-  components: { contain },
-  props: ["preBlog", "sping"],
+  components: { contain, editor },
+  props: ['preBlog', 'sping'],
   data() {
     return {
       editor: new Object(),
       blog: new Object(),
       tagList: [
         {
-          value: "javascript",
-          label: "javascript"
+          value: 'javascript',
+          label: 'javascript'
         },
         {
-          value: "python",
-          label: "python"
+          value: 'python',
+          label: 'python'
         }
       ],
       selectedTags: []
@@ -64,12 +65,11 @@ export default {
     blog: {
       deep: true,
       handler() {
-        this.$emit("modifyBlog", this.blog);
+        this.$emit('modifyBlog', this.blog);
       }
     },
     preBlog() {
       this.blog = this.preBlog;
-
       const tagsVal = this.tagList.map(it => it.value);
       this.preBlog.tags.forEach(ele => {
         if (!tagsVal.includes(ele)) {
@@ -79,8 +79,7 @@ export default {
           });
         }
       });
-
-      this.editor.txt.html(this.blog.content);
+      this.editor.setHtml(this.blog.content);
     }
   },
   computed: {
@@ -88,21 +87,21 @@ export default {
       return this.preBlog.classify;
     }
   },
-  mounted() {
-    this.editor = new E("#editor");
-    this.editor.config.onchange = () => {
-      this.blog.content = this.editor.txt.html();
-    };
-    this.editor.config.height = 500;
-    this.editor.config.uploadImgShowBase64 = false;
-    this.editor.config.uploadImgServer = uPimgUrl;
-    this.editor.config.uploadFileName = "image";
-    this.editor.create();
+  methods: {
+    onCreated(editor) {
+      this.editor = editor;
+    },
+    onContentChange(value) {
+      this.blog.content = value;
+    }
   }
 };
 </script>
 
 <style scoped>
+.container {
+  height: calc(100% - 48px);
+}
 .title {
   margin-bottom: 10px;
 }
@@ -112,13 +111,19 @@ export default {
 }
 
 .edit-btn {
+  padding: 12px 24px;
+  background-color: #fff;
+  border-top: 1px solid #e8e8e8;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
   display: flex;
   justify-content: flex-end;
-  padding-top: 10px;
 }
 
 .space {
-  width: 30px;
+  width: 12px;
 }
 
 .tag-box .ant-select {
