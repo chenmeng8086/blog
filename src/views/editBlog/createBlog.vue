@@ -28,7 +28,7 @@
       </a-select>
     </div>
     <div style="margin-bottom: 48px;">
-      <editor :onContentChange="onContentChange" />y
+      <editor :onContentChange="onContentChange" />
     </div>
 
     <div class="creat-btn">

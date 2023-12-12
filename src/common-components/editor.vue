@@ -38,10 +38,15 @@ export default {
   },
   mounted() {
     const editorConfig = {
-      placeholder: 'Type here...',
+      placeholder: this.readOnly ? '' : '请输入...',
       readOnly: this.readOnly,
       onChange: editor => {
         this.onContentChange(editor.getHtml());
+      },
+      MENU_CONF: {
+        uploadImage: {
+          base64LimitSize: 1024 * 1024 // 1M以下走base64
+        }
       }
     };
     this.editor = Object.seal(

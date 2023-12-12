@@ -90,7 +90,6 @@ export default {
   font-size: 24px;
   font-weight: bold;
   padding: 20px 12px;
-  border-radius: 12px;
   border-bottom: 1px solid #e8e8e8;
 }
 
