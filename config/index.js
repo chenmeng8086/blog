@@ -13,6 +13,7 @@ module.exports = {
     proxyTable: {
       '/api': {  //使用"/api"来代替"http://f.apiplus.c" 
         target: 'http://39.99.244.38:8080', //源地址 
+        target: 'http://localhost:8080', //源地址 
         // target: 'http://47.111.176.133:8000', //源地址zz 
         changeOrigin: true, //改变源 
         pathRewrite: {
@@ -24,7 +25,7 @@ module.exports = {
 
     // Various Dev Server settings
     host: '0.0.0.0', // can be overwritten by process.env.HOST
-    port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    port: 8081, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,

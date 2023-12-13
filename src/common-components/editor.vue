@@ -45,7 +45,13 @@ export default {
       },
       MENU_CONF: {
         uploadImage: {
-          base64LimitSize: 1024 * 1024 // 1M以下走base64
+          base64LimitSize: 1024 * 1024, // 1M以下走base64
+          server: '/api/blog/upload_image',
+          maxFileSize: 10 * 1024 * 1024, // 10M
+          fieldName: 'file',
+          // 选择文件时的类型限制，默认为 ['image/*'] 。如不想限制，则设置为 []
+          allowedFileTypes: [],
+          timeout: 30 * 1000,
         }
       }
     };
@@ -73,15 +79,16 @@ export default {
 };
 </script>
 
-<style src="@wangeditor/editor/dist/css/style.css">
-</style>
+<style src="@wangeditor/editor/dist/css/style.css"></style>
 <style scoped>
 .container {
   z-index: 99;
 }
+
 #toolbar-container {
   border: 1px #f0f0f0 solid;
 }
+
 #editor-container {
   border: 1px #f0f0f0 solid;
   min-height: 600px;

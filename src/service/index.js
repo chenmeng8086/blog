@@ -3,6 +3,8 @@ const baseURL = '/api'
 
 const require = axios.create({
     baseURL,
+    maxContentLength: Infinity,
+    maxBodyLength: Infinity
 })
 
 require.interceptors.response.use(res => {
