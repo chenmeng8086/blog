@@ -6,7 +6,6 @@
     </div>
     <div class="container-box">
       <div class="title">{{ blog.title }}</div>
-      <div class="description">内容介绍：{{ blog.description }}</div>
       <div class="tag-box">
         标签：
         <Tag v-for="(el, index) in blog.tags" :key="index">{{ el }}</Tag>
@@ -74,7 +73,6 @@ export default {
 .container-box {
   padding: 0 10px 10px 10px;
   max-width: 1000px;
-  min-height: 100vh;
   margin: 0 auto;
   border-radius: 12px;
 
@@ -86,19 +84,12 @@ export default {
 
 .title {
   margin: 0 -10px 0 -10px;
-  text-align: center;
   font-size: 24px;
   font-weight: bold;
   padding: 20px 12px;
   border-bottom: 1px solid #e8e8e8;
 }
 
-.description {
-  font-size: 16px;
-  font-weight: bold;
-  color: #464c5b;
-  margin-top: 12px;
-}
 .tag-box {
   margin: 12px 0;
 }

@@ -1,16 +1,15 @@
 <template>
   <contain>
-    <div class="bg-img" :style="{backgroundImage: `url(${randomImg})`}">{{randomWord}}</div>
+    <div class="bg-img" :style="{ backgroundImage: `url(${randomImg})` }">{{ randomWord }}</div>
   </contain>
 </template>
 
 <script>
-import uploadImg from '@/common-components/upload.vue';
 import contain from '@/common-components/contain.vue';
 import { getWord } from '@/service';
 export default {
   name: 'home',
-  components: { contain, uploadImg },
+  components: { contain },
   data() {
     return {
       loopImgs: [

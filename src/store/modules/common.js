@@ -1,5 +1,4 @@
 const state = {
-  activeName: '首页',
   searchKey: '',
   searchType: 'part',
   userInfo: {}
@@ -26,10 +25,6 @@ const actions = {
 
 // mutations
 const mutations = {
-  changeAcitveName(state, activeName) {
-    state.activeName = activeName
-  },
-
   changeSearchkey(state, searchkey) {
     state.searchKey = searchkey
   },

@@ -1,11 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import home from '@/views/home'
-import preview from '@/views/preview'
-import add from '@/views/editBlog/createBlog'
-import modify from '@/views/editBlog/modifyBlog'
-import login from '@/views/login'
-import blogList from '@/views/blogList'
 Vue.use(Router)
 
 // 重写路由的push函数，否则路由跳转时会报错
@@ -23,32 +17,32 @@ const router = new Router({
     {
       path: '/login',
       name: 'login',
-      component: login
+      component: () => import('@/views/login')
     },
     {
       path: '/home',
       name: 'home',
-      component: home
+      component: () => import('@/views/home')
     },
     {
       path: '/list',
       name: 'other',
-      component: blogList
+      component: () => import('@/views/blogList')
     },
     {
       path: '/preview/:blogId',
       name: 'preview',
-      component: preview
+      component: () => import('@/views/preview')
     },
     {
       path: '/add/:position',
       name: 'add',
-      component: add
+      component: () => import('@/views/editBlog')
     },
     {
       path: '/modify/:blogId',
       name: 'modify',
-      component: modify
+      component: () => import('@/views/editBlog')
     }
   ]
 })

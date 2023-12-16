@@ -4,13 +4,10 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import ViewUI from 'view-design'
-import Antd from 'ant-design-vue'
 import 'view-design/dist/styles/iview.css'
-import 'ant-design-vue/dist/antd.css'
 import store from './store'
 
 Vue.use(ViewUI)
-Vue.use(Antd)
 Vue.config.productionTip = false
 
 // 全局路由钩子，权限管理，注意next()会导致死循环

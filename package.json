@@ -14,10 +14,9 @@
   },
   "dependencies": {
     "@wangeditor/editor": "^5.1.23",
-    "ant-design-vue": "^1.7.2",
     "axios": "^0.21.0",
     "proton-engine": "^4.2.1",
-    "view-design": "^4.4.0",
+    "view-design": "^4.7.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vuex": "^3.6.0"

@@ -1,6 +1,7 @@
 <template>
   <div class="container">
-    <div id="toolbar-container" :style="{ display: hideToolbar ? 'none' : 'block' }"></div>
+    <div id="toolbar-container" :style="{ display: hideToolbar ? 'none' : 'block', top: fullScreen ? '0' : '64px' }">
+    </div>
     <div id="editor-container"></div>
   </div>
 </template>
@@ -33,7 +34,8 @@ export default {
   data() {
     return {
       toolbar: null,
-      editor: null
+      editor: null,
+      fullScreen: false
     };
   },
   mounted() {
@@ -45,14 +47,14 @@ export default {
       },
       MENU_CONF: {
         uploadImage: {
-          base64LimitSize: 1024 * 1024, // 1M以下走base64
+          base64LimitSize: 10 * 1024, // 10kb以下走base64
           server: '/api/blog/upload_image',
           maxFileSize: 10 * 1024 * 1024, // 10M
           fieldName: 'file',
           // 选择文件时的类型限制，默认为 ['image/*'] 。如不想限制，则设置为 []
           allowedFileTypes: [],
           timeout: 30 * 1000,
-        }
+        },
       }
     };
     this.editor = Object.seal(
@@ -64,7 +66,13 @@ export default {
       })
     );
     const toolbarConfig = {};
-
+    window.editor = this.editor
+    this.editor.on('fullScreen', () => {
+      this.fullScreen = true
+    })
+    this.editor.on('unFullScreen', () => {
+      this.fullScreen = false
+    })
     this.toolbar = createToolbar({
       editor: this.editor,
       selector: '#toolbar-container',
@@ -87,6 +95,11 @@ export default {
 
 #toolbar-container {
   border: 1px #f0f0f0 solid;
+  position: fixed;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1;
 }
 
 #editor-container {
