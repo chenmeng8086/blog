@@ -46,10 +46,12 @@
             </sping>
             <Input size="large" :border="false" placeholder="请输入名称" v-model="selectedBlog.title"
                 @on-change="onTitleChange"></Input>
-            <div id="note-tool-bar">
-            </div>
-            <editor :hideToolbar="true" :onCreated="onEditorCreated" :onContentChange="onContentChange"
-                :editorStyle="{ height: 'calc(100% - 41px - 40px - 2px)', overflow: 'auto' }" />
+            <template v-if="showEditor">
+                <div id="note-tool-bar">
+                </div>
+                <editor :hideToolbar="true" :onCreated="onEditorCreated" :onContentChange="onContentChange"
+                    :editorStyle="{ height: 'calc(100% - 41px - 40px - 2px)', overflow: 'auto' }" />
+            </template>
             </Col>
         </Row>
     </contain>
@@ -74,6 +76,7 @@ export default {
             selectedId: null,
             selectedBlog: {},
             editor: null,
+            showEditor: true,
         };
     },
     mounted() {
@@ -110,17 +113,22 @@ export default {
         },
         getBlog(id) {
             this.blogLoad = true;
+            this.showEditor = false;
             getSingleBlog({ id })
                 .then(res => {
                     if (res.status === 200) {
                         this.selectedBlog = res.data;
-                        this.editor.setHtml(this.selectedBlog.content);
+                        this.showEditor = true;
+                        this.$nextTick(() => {
+                            this.editor.setHtml(this.selectedBlog.content);
+                        });
                     } else {
                         this.$Message.error({
                             background: true,
                             content: res.msg
                         });
                     }
+                }).finally(() => {
                     this.blogLoad = false;
                 });
         },
@@ -133,9 +141,6 @@ export default {
         },
         onContentChange(value) {
             if (value === this.selectedBlog.content) {
-                return;
-            }
-            if (this.blogLoad) {
                 return;
             }
             this.selectedBlog.content = value;

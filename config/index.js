@@ -13,7 +13,7 @@ module.exports = {
     proxyTable: {
       '/api': {  //使用"/api"来代替"http://f.apiplus.c" 
         target: 'http://39.99.244.38:8080', //源地址 
-        target: 'http://localhost:8080', //源地址 
+        // target: 'http://localhost:8080', //源地址 
         // target: 'http://47.111.176.133:8000', //源地址zz 
         changeOrigin: true, //改变源 
         pathRewrite: {
