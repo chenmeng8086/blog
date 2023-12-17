@@ -12,7 +12,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      redirect: '/list'
+      redirect: '/note'
     },
     {
       path: '/login',
@@ -43,6 +43,11 @@ const router = new Router({
       path: '/modify/:blogId',
       name: 'modify',
       component: () => import('@/views/editBlog')
+    },
+    {
+      path: '/note',
+      name: 'note',
+      component: () => import('@/views/note')
     }
   ]
 })

@@ -11,8 +11,8 @@
           </svg>
           <span>我的笔记</span>
         </span>
-        <Input class="search-input" :value="common.searchKey" @on-change="changeSeachKey" search placeholder="请输入相关搜索内容"
-          @on-search="searchBlog"></Input>
+        <Input v-if="showSearch" class="search-input" :value="common.searchKey" @on-change="changeSeachKey" search
+          placeholder="请输入相关搜索内容" @on-search="searchBlog"></Input>
         <span>
           <Avatar icon="ios-person" />
           <Dropdown @on-click="onDropdown">
@@ -28,19 +28,15 @@
           </Dropdown>
         </span>
       </Header>
-      <Layout style="height: calc(100vh - 64px)">
-        <Layout :style="{ padding: '0 24px 12px 24px' }">
-          <slot name="top-bar"></slot>
-          <slot name="breadcrumb"></slot>
-          <Content class="content" :style="{ padding: '24px', minHeight: '280px', background: '#fff' }">
-            <Sping v-if="sping"></Sping>
-            <div v-if="noData" class="none-default">
-              <Icon size="80" type="md-sad" />暂无数据~
-            </div>
-            <slot></slot>
-          </Content>
-          <slot name="bottom-bar"></slot>
-        </Layout>
+      <Layout :style="{ height: 'calc(100vh - 64px)' }">
+        <slot name="top-bar"></slot>
+        <Content class="content" :style="{ padding: '24px', backgroundColor: '#fff' }">
+          <Sping v-if="sping"></Sping>
+          <div v-if="noData" class="none-default">
+            <Icon size="80" type="md-sad" />暂无数据~
+          </div>
+          <slot></slot>
+        </Content>
       </Layout>
     </Layout>
   </div>
@@ -55,6 +51,10 @@ export default {
     sping: false,
     search: {
       type: Function
+    },
+    showSearch: {
+      type: Boolean,
+      default: () => true
     }
   },
 
@@ -135,6 +135,7 @@ export default {
 .ivu-layout-header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .layout-logo {

@@ -96,7 +96,7 @@ export default {
             store.isLogin = true;
             sessionStorage.setItem('userInfo', JSON.stringify(res.data));
             if (this.formInline.operation === 'login') {
-              this.$router.push('/list');
+              this.$router.push('/');
             }
             this.$Message.success({
               background: true,

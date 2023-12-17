@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" :style="editorStyle">
     <div id="toolbar-container" :style="{ display: hideToolbar ? 'none' : 'block', top: fullScreen ? '0' : '64px' }">
     </div>
     <div id="editor-container"></div>
@@ -18,6 +18,10 @@ export default {
       type: Function,
       default: new Function()
     },
+    onBlur: {
+      type: Function,
+      default: new Function()
+    },
     initailHtml: {
       type: String,
       default: () => ''
@@ -29,6 +33,10 @@ export default {
     hideToolbar: {
       type: Boolean,
       default: () => false
+    },
+    editorStyle: {
+      type: Object,
+      default: () => { }
     }
   },
   data() {
@@ -44,6 +52,9 @@ export default {
       readOnly: this.readOnly,
       onChange: editor => {
         this.onContentChange(editor.getHtml());
+      },
+      onBlur: () => {
+        this.onBlur();
       },
       MENU_CONF: {
         uploadImage: {
@@ -91,6 +102,7 @@ export default {
 <style scoped>
 .container {
   z-index: 99;
+  height: 100%;
 }
 
 #toolbar-container {
@@ -103,7 +115,6 @@ export default {
 }
 
 #editor-container {
-  border: 1px #f0f0f0 solid;
-  min-height: 600px;
+  min-height: 400px;
 }
 </style>
