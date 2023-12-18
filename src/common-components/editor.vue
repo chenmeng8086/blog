@@ -1,7 +1,9 @@
 <template>
   <div class="container" :style="editorStyle">
-    <div id="toolbar-container" :style="{ display: hideToolbar ? 'none' : 'block', top: fullScreen ? '0' : '64px' }">
-    </div>
+    <div
+      id="toolbar-container"
+      :style="{ display: hideToolbar ? 'none' : 'block', top: fullScreen ? '0' : '48px' }"
+    ></div>
     <div id="editor-container"></div>
   </div>
 </template>
@@ -36,7 +38,7 @@ export default {
     },
     editorStyle: {
       type: Object,
-      default: () => { }
+      default: () => {}
     }
   },
   data() {
@@ -64,8 +66,8 @@ export default {
           fieldName: 'file',
           // 选择文件时的类型限制，默认为 ['image/*'] 。如不想限制，则设置为 []
           allowedFileTypes: [],
-          timeout: 30 * 1000,
-        },
+          timeout: 30 * 1000
+        }
       }
     };
     this.editor = Object.seal(
@@ -77,13 +79,13 @@ export default {
       })
     );
     const toolbarConfig = {};
-    window.editor = this.editor
+    window.editor = this.editor;
     this.editor.on('fullScreen', () => {
-      this.fullScreen = true
-    })
+      this.fullScreen = true;
+    });
     this.editor.on('unFullScreen', () => {
-      this.fullScreen = false
-    })
+      this.fullScreen = false;
+    });
     this.toolbar = createToolbar({
       editor: this.editor,
       selector: '#toolbar-container',
@@ -102,7 +104,7 @@ export default {
 <style scoped>
 .container {
   z-index: 99;
-  height: 100%;
+  overflow: auto;
 }
 
 #toolbar-container {
