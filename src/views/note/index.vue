@@ -154,7 +154,7 @@ export default {
         .then(res => {
           if (res.status === 200) {
             this.blogList = res.data || [];
-            callback(this.blogList);
+            if (callback) callback && callback(this.blogList);
           }
         })
         .catch(err => {
